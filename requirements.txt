@@ -1,5 +1,4 @@
 fastapi
-firebase-admin
 uvicorn
 sqlalchemy
 bcrypt
@@ -7,4 +6,3 @@ PyMySQL
 boto3
 httpx
 python-multipart
-redis
