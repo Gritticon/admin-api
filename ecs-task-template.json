@@ -38,7 +38,6 @@
         }
     ],
     "cpu": "256",
-    "enableFaultInjection": false,
     "executionRoleArn": "arn:aws:iam::314146310240:role/ecsTaskExecutionRole",
     "family": "admin-api-server-td",
     "memory": "512",
