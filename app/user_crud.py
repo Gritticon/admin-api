@@ -10,12 +10,12 @@ from app.verify_user import verify_user
 import bcrypt
 import secrets
 
-router = APIRouter(prefix="/user", tags=["User CRUD Account"])
+router = APIRouter(prefix="/admin-api/user", tags=["User CRUD Account"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create User API ------------------------------------------------
 
-@router.post('/admin-api/create_user')
+@router.post('/create_user')
 def create_user(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -79,7 +79,7 @@ def create_user(
 
 #----------------------------------------------------- Update User API ------------------------------------------------
 
-@router.put('/admin-api/update_user')
+@router.put('/update_user')
 def update_user(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], updatedUser: UserBase, db: Session = Depends(get_admin_db)):
 
     try: 
@@ -117,7 +117,7 @@ def update_user(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], upd
 
 #----------------------------------------------------- Delete User API ------------------------------------------------ 
 
-@router.delete('/admin-api/delete_user')
+@router.delete('/delete_user')
 def delete_user(user_id: int, user_to_delete: int,token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
 
     try: 
@@ -142,7 +142,7 @@ def delete_user(user_id: int, user_to_delete: int,token: Annotated[str, Depends(
 
 #----------------------------------------------------- Get Users API ------------------------------------------------
 
-@router.get('/admin-api/get_users')
+@router.get('/get_users')
 def get_users(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
     
     # Validate the requested user

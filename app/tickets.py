@@ -11,12 +11,12 @@ from schema.s_ticket_updates import TicketUpdateSchema
 from schema.s_tickets import TicketSchema
 
 
-router = APIRouter(prefix="/tickets", tags=["Ticket CRUD Operations"])
+router = APIRouter(prefix="/admin-api/tickets", tags=["Ticket CRUD Operations"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create Ticket API ------------------------------------------------
 
-@router.post('/admin-api/create_ticket')
+@router.post('/create_ticket')
 def create_ticket(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -76,7 +76,7 @@ def create_ticket(
 #----------------------------------------------------- Get Ticket API ------------------------------------------------
 
 
-@router.get('/admin-api/get_all_opened_ticket')
+@router.get('/get_all_opened_ticket')
 def get_all_opened_ticket(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
 
     # Validate the requested user
@@ -112,7 +112,7 @@ def get_all_opened_ticket(user_id: int, token: Annotated[str, Depends(oauth2_sch
 
 #---------------------------------------------- Get Specific Client Tickets API ------------------------------------------
 
-@router.get('/admin-api/get_client_tickets')
+@router.get('/get_client_tickets')
 def get_client_tickets(client_id: int, user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
 
     # Validate the requested user
@@ -156,7 +156,7 @@ def get_client_tickets(client_id: int, user_id: int, token: Annotated[str, Depen
 #----------------------------------------------------- Get Ticket Updats API ------------------------------------------------
 
 
-@router.get('/admin-api/get_ticket_updates')
+@router.get('/get_ticket_updates')
 def get_ticket_updates(ticket_id: str, user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
 
     # Validate the requested user
@@ -189,7 +189,7 @@ def get_ticket_updates(ticket_id: str, user_id: int, token: Annotated[str, Depen
 #----------------------------------------------------- Create Update API ------------------------------------------------
 
 
-@router.post('/admin-api/create_update')
+@router.post('/create_update')
 def create_update(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], update_data: TicketUpdateSchema, db: Session = Depends(get_admin_db)):
     # Validate the requested user
     if not verify_user(user_id, token, db):
@@ -232,7 +232,7 @@ def create_update(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], u
 
 #-------------------------------------------- Update Ticket Status and Priority API -----------------------------------------
 
-@router.put('/admin-api/update_ticket_status')
+@router.put('/update_ticket_status')
 def update_ticket_status(ticket_id: int, user_id: int, token: Annotated[str, Depends(oauth2_scheme)], status: int, priority: int, db: Session = Depends(get_admin_db)):
     # Validate the requested user
     if not verify_user(user_id, token, db):

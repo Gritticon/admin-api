@@ -9,12 +9,12 @@ from typing import Annotated
 from datetime import datetime
 
 
-router = APIRouter(prefix="/packages", tags=["Package CRUD Operations"])
+router = APIRouter(prefix="/admin-api/packages", tags=["Package CRUD Operations"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create Package API ------------------------------------------------
 
-@router.post('/admin-api/create_package')
+@router.post('/create_package')
 def create_package(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -56,7 +56,7 @@ def create_package(
     
 #----------------------------------------------------- Delete Package API ------------------------------------------------
 
-@router.delete('/admin-api/delete_package')
+@router.delete('/delete_package')
 def delete_package(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -88,7 +88,7 @@ def delete_package(
 
 #----------------------------------------------------- Get Packages API ------------------------------------------------
 
-@router.get('/admin-api/get_packages')
+@router.get('/get_packages')
 def get_packages(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 

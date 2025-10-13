@@ -13,12 +13,12 @@ from database.db_updates import TrackUpdate
 from send_updates import send_device1_update
 
 
-router = APIRouter(prefix="/customers", tags=[" Account"])
+router = APIRouter(prefix="/admin-api/customers", tags=[" Account"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #------------------------------------- Get Client Search List API ------------------------------------------------
 
-@router.get('/admin-api/get_all_clients')
+@router.get('/get_all_clients')
 def get_all_clients(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -76,7 +76,7 @@ def get_all_clients(
 
 #------------------------------------- Get specific client API ------------------------------------------------
 
-@router.get('/admin-api/get_specific_client')
+@router.get('/get_specific_client')
 def get_specific_client(
     user_id: int, 
     account_id: int, 
@@ -130,7 +130,7 @@ def get_specific_client(
 
 #------------------------------------- Update Client Subscription API ------------------------------------------------
 
-@router.post('/admin-api/update_client_subscription')
+@router.post('/update_client_subscription')
 async def update_client_subscription(
     request: ClientUpdate, 
     token: Annotated[str, Depends(oauth2_scheme)],  
