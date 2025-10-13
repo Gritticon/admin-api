@@ -35,3 +35,4 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker push 314146310240.dkr.ecr.ap-south-1.amazonaws.com/admin-api-server:latest
+          
