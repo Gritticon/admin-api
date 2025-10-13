@@ -14,7 +14,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create Package API ------------------------------------------------
 
-@router.post('/create_package')
+@router.post('/admin-api/create_package')
 def create_package(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -56,7 +56,7 @@ def create_package(
     
 #----------------------------------------------------- Delete Package API ------------------------------------------------
 
-@router.delete('/delete_package')
+@router.delete('/admin-api/delete_package')
 def delete_package(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -88,7 +88,7 @@ def delete_package(
 
 #----------------------------------------------------- Get Packages API ------------------------------------------------
 
-@router.get('/get_packages')
+@router.get('/admin-api/get_packages')
 def get_packages(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 

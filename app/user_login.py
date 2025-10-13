@@ -12,7 +12,7 @@ router = APIRouter(prefix="/login", tags=["Admin User Account"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-@router.post('/admin_login')
+@router.post('/admin-api/admin_login')
 def login_admin(email:str, password:str, db: Session = Depends(get_admin_db)):
 
     if not email or not password:

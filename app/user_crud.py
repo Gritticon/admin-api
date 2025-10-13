@@ -15,7 +15,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create User API ------------------------------------------------
 
-@router.post('/create_user')
+@router.post('/admin-api/create_user')
 def create_user(
     user_id: int, 
     token: Annotated[str, Depends(oauth2_scheme)], 
@@ -79,7 +79,7 @@ def create_user(
 
 #----------------------------------------------------- Update User API ------------------------------------------------
 
-@router.put('/update_user')
+@router.put('/admin-api/update_user')
 def update_user(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], updatedUser: UserBase, db: Session = Depends(get_admin_db)):
 
     try: 
@@ -117,7 +117,7 @@ def update_user(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], upd
 
 #----------------------------------------------------- Delete User API ------------------------------------------------ 
 
-@router.delete('/delete_user')
+@router.delete('/admin-api/delete_user')
 def delete_user(user_id: int, user_to_delete: int,token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
 
     try: 
@@ -142,7 +142,7 @@ def delete_user(user_id: int, user_to_delete: int,token: Annotated[str, Depends(
 
 #----------------------------------------------------- Get Users API ------------------------------------------------
 
-@router.get('/get_users')
+@router.get('/admin-api/get_users')
 def get_users(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
     
     # Validate the requested user
