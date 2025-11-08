@@ -9,5 +9,5 @@ class PackageBase(BaseModel):
     status: int  # 1 for active, 0 for inactive
     notes: Optional[str] = None
     price: float  # in cents
-    created_at: str  # ISO format datetime string
-    created_by: int
+    created_at: Optional[str] = None  # ISO format datetime string
+    created_by: Optional[int] = None

@@ -9,7 +9,7 @@ from typing import Annotated
 from datetime import datetime
 
 
-router = APIRouter(prefix="/admin-api/packages", tags=["Package CRUD Operations"])
+router = APIRouter(prefix="/admin-api/packages", tags=["Package"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create Package API ------------------------------------------------
@@ -47,8 +47,12 @@ def create_package(
         adminDb.add(new_package)
         adminDb.commit()
         adminDb.refresh(new_package)
+
+        package_data.id = new_package.id
+        package_data.created_at = new_package.created_at.isoformat()
+        package_data.created_by = new_package.created_by
         
-        return {"message": "Package created successfully", "package_id": new_package.id}
+        return {"package": new_package}
     
     except Exception as e:
         adminDb.rollback()
@@ -100,7 +104,7 @@ def get_packages(
         raise HTTPException(status_code=401, detail="Unauthorized user")
     
     # Fetch all active packages
-    packages = adminDb.query(Package).filter(Package.status == 1).all()
+    packages = adminDb.query(Package).all()
 
     output = []
 
