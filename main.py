@@ -50,9 +50,9 @@ app = FastAPI(
     
     To get credentials, use the login endpoint: `/admin-api/login/admin_login`
     """,
-    docs_url="/docs",
-    redoc_url="/redoc",
-    openapi_url="/openapi.json",
+    docs_url="/admin-api/docs",
+    redoc_url="/admin-api/redoc",
+    openapi_url="/admin-api/openapi.json",
     tags_metadata=[
         {
             "name": "Admin User Account",
@@ -162,7 +162,7 @@ def root():
         "name": settings.APP_NAME,
         "version": settings.APP_VERSION,
         "status": "running",
-        "docs": "/docs"
+        "docs": "/admin-api/docs"
     }
 
 @app.get("/health", tags=["Health"])
