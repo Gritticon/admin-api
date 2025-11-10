@@ -1,5 +1,5 @@
 from sqlalchemy import Column,  Integer, String, DateTime, JSON
-from database.config import AdminBase
+from core.database import AdminBase
 
 class TrackUpdate(AdminBase):
     __tablename__ = "TrackUpdates"

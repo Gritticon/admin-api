@@ -2,14 +2,12 @@ from datetime import datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordBearer
 from database.session import get_admin_db
 from database.db_users import User
 from schema.s_users import UserBase
 import bcrypt
 
 router = APIRouter(prefix="/admin-api/login", tags=["Admin User Account"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @router.post('/admin_login')

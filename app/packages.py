@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordBearer
-from app.verify_user import verify_user
+from core.security import get_user_id, get_bearer_token, verify_user
 from database.session import get_admin_db
 from database.db_packages import Package
 from schema.s_packages import PackageBase
@@ -10,15 +9,14 @@ from datetime import datetime
 
 
 router = APIRouter(prefix="/admin-api/packages", tags=["Package"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create Package API ------------------------------------------------
 
 @router.post('/create_package')
-def create_package(
-    user_id: int, 
-    token: Annotated[str, Depends(oauth2_scheme)], 
-    package_data: PackageBase, 
+async def create_package(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    package_data: PackageBase,
     adminDb: Session = Depends(get_admin_db)
     ):
 
@@ -61,10 +59,10 @@ def create_package(
 #----------------------------------------------------- Delete Package API ------------------------------------------------
 
 @router.delete('/delete_package')
-def delete_package(
-    user_id: int, 
-    token: Annotated[str, Depends(oauth2_scheme)], 
-    package_id: int, 
+async def delete_package(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    package_id: int,
     adminDb: Session = Depends(get_admin_db)
     ):
 
@@ -93,9 +91,9 @@ def delete_package(
 #----------------------------------------------------- Get Packages API ------------------------------------------------
 
 @router.get('/get_packages')
-def get_packages(
-    user_id: int, 
-    token: Annotated[str, Depends(oauth2_scheme)], 
+async def get_packages(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
     adminDb: Session = Depends(get_admin_db)
     ):
 

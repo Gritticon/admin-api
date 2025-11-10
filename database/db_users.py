@@ -1,5 +1,5 @@
 from sqlalchemy import  Column, Integer, String, JSON, DATETIME
-from database.config import AdminBase
+from core.database import AdminBase
 
 class User(AdminBase):
     __tablename__ = "AdminUsers"

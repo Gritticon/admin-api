@@ -1,18 +1,18 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 class ClientUpdate(BaseModel):
-    user_id: int
     account_id: int
-    subscribed: Optional[int] = 1
-    active_modules: Optional[list[int]] = None
-    device_limit: Optional[int] = 0
+    package_id: Optional[int] = None  # Package template ID (0 or None means no package)
+    subscribed: Optional[int] = 1  # Subscription status (1 = active, 0 = inactive)
+    additional_devices: Optional[int] = 0  # Additional devices on top of package device_limit
+    additional_modules: Optional[List[int]] = []  # Additional modules on top of package active_modules
 
     def to_dict(self):
         return {
-            "user_id": self.user_id,
             "account_id": self.account_id,
+            "package_id": self.package_id or 0,
             "subscribed": self.subscribed,
-            "active_modules": self.active_modules or [],
-            "device_limit": self.device_limit
+            "additional_devices": self.additional_devices or 0,
+            "additional_modules": self.additional_modules or []
         }

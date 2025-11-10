@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: 'admin-api-server'           
   ECS_SERVICE: 'admin-api-server-td-service-02995jwb'                
   ECS_CLUSTER: 'ShopOS'                 
-  ECS_TASK_DEFINITION: "ecs-task-template.json" 
+  ECS_TASK_DEFINITION: "utils/ecs-task-template.json" 
   CONTAINER_NAME: 'admin-api-server' 
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker build -f docker/Dockerfile -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
           docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
           

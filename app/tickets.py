@@ -2,9 +2,8 @@ from datetime import datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordBearer
 from database.session import get_admin_db
-from app.verify_user import verify_user
+from core.security import get_user_id, get_bearer_token, verify_user
 from database.db_tickets import Ticket
 from database.db_ticket_updates import TicketUpdate
 from schema.s_ticket_updates import TicketUpdateSchema
@@ -12,15 +11,14 @@ from schema.s_tickets import TicketSchema
 
 
 router = APIRouter(prefix="/admin-api/tickets", tags=["Ticket CRUD Operations"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create Ticket API ------------------------------------------------
 
 @router.post('/create_ticket')
-def create_ticket(
-    user_id: int, 
-    token: Annotated[str, Depends(oauth2_scheme)], 
-    ticket_data: TicketSchema, 
+async def create_ticket(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    ticket_data: TicketSchema,
     adminDb: Session = Depends(get_admin_db)
     ):
     # Validate the requested user
@@ -77,7 +75,11 @@ def create_ticket(
 
 
 @router.get('/get_all_opened_ticket')
-def get_all_opened_ticket(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
+async def get_all_opened_ticket(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    db: Session = Depends(get_admin_db)
+    ):
 
     # Validate the requested user
     if not verify_user(user_id, token, db):
@@ -113,7 +115,12 @@ def get_all_opened_ticket(user_id: int, token: Annotated[str, Depends(oauth2_sch
 #---------------------------------------------- Get Specific Client Tickets API ------------------------------------------
 
 @router.get('/get_client_tickets')
-def get_client_tickets(client_id: int, user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
+async def get_client_tickets(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    client_id: int,
+    db: Session = Depends(get_admin_db)
+    ):
 
     # Validate the requested user
     if not verify_user(user_id, token, db):
@@ -157,7 +164,12 @@ def get_client_tickets(client_id: int, user_id: int, token: Annotated[str, Depen
 
 
 @router.get('/get_ticket_updates')
-def get_ticket_updates(ticket_id: str, user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
+async def get_ticket_updates(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    ticket_id: str,
+    db: Session = Depends(get_admin_db)
+    ):
 
     # Validate the requested user
     if not verify_user(user_id, token, db):
@@ -190,7 +202,12 @@ def get_ticket_updates(ticket_id: str, user_id: int, token: Annotated[str, Depen
 
 
 @router.post('/create_update')
-def create_update(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], update_data: TicketUpdateSchema, db: Session = Depends(get_admin_db)):
+async def create_update(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    update_data: TicketUpdateSchema,
+    db: Session = Depends(get_admin_db)
+    ):
     # Validate the requested user
     if not verify_user(user_id, token, db):
         raise HTTPException(status_code=401, detail="Unauthorized user")
@@ -233,7 +250,14 @@ def create_update(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], u
 #-------------------------------------------- Update Ticket Status and Priority API -----------------------------------------
 
 @router.put('/update_ticket_status')
-def update_ticket_status(ticket_id: int, user_id: int, token: Annotated[str, Depends(oauth2_scheme)], status: int, priority: int, db: Session = Depends(get_admin_db)):
+async def update_ticket_status(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    ticket_id: int,
+    status: int,
+    priority: int,
+    db: Session = Depends(get_admin_db)
+    ):
     # Validate the requested user
     if not verify_user(user_id, token, db):
         raise HTTPException(status_code=401, detail="Unauthorized user")

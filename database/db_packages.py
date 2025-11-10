@@ -1,5 +1,5 @@
 from sqlalchemy import  Column, Integer, String, DATETIME, Text, JSON, Float
-from database.config import AdminBase
+from core.database import AdminBase
 
 class Package(AdminBase):
     __tablename__ = "packages"

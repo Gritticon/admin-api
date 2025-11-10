@@ -2,29 +2,26 @@ from datetime import datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordBearer
 from database.session import  get_admin_db
 from database.db_users import User
 from schema.s_users import UserBase
-from app.verify_user import verify_user
+from core.security import get_user_id, get_bearer_token, verify_user
 import bcrypt
 import secrets
 
 router = APIRouter(prefix="/admin-api/user", tags=["User CRUD Account"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 #----------------------------------------------------- Create User API ------------------------------------------------
 
 @router.post('/create_user')
-def create_user(
-    user_id: int, 
-    token: Annotated[str, Depends(oauth2_scheme)], 
-    newUser: UserBase, 
+async def create_user(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    newUser: UserBase,
     db: Session = Depends(get_admin_db)
     ):
 
     try: 
-
         # Validate the requested user
         if not verify_user(user_id, token, db):
             raise HTTPException(status_code=401, detail="Unauthorized user")
@@ -80,10 +77,14 @@ def create_user(
 #----------------------------------------------------- Update User API ------------------------------------------------
 
 @router.put('/update_user')
-def update_user(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], updatedUser: UserBase, db: Session = Depends(get_admin_db)):
+async def update_user(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    updatedUser: UserBase,
+    db: Session = Depends(get_admin_db)
+    ):
 
     try: 
-
         # Validate the requested user
         if not verify_user(user_id, token, db):
             raise HTTPException(status_code=401, detail="Unauthorized user")
@@ -118,7 +119,12 @@ def update_user(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], upd
 #----------------------------------------------------- Delete User API ------------------------------------------------ 
 
 @router.delete('/delete_user')
-def delete_user(user_id: int, user_to_delete: int,token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
+async def delete_user(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    user_to_delete: int,
+    db: Session = Depends(get_admin_db)
+    ):
 
     try: 
         # Validate the requested user
@@ -143,7 +149,11 @@ def delete_user(user_id: int, user_to_delete: int,token: Annotated[str, Depends(
 #----------------------------------------------------- Get Users API ------------------------------------------------
 
 @router.get('/get_users')
-def get_users(user_id: int, token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_admin_db)):
+async def get_users(
+    user_id: Annotated[int, Depends(get_user_id)],
+    token: Annotated[str, Depends(get_bearer_token)],
+    db: Session = Depends(get_admin_db)
+    ):
     
     # Validate the requested user
     if not verify_user(user_id, token, db):

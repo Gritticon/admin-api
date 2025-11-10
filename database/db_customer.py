@@ -1,5 +1,5 @@
 from sqlalchemy import Column,  Integer, String, BigInteger, Text, DateTime, JSON, Boolean, Float
-from database.config import AppBase 
+from core.database import AppBase 
 
 class Client(AppBase):
     __tablename__ = "BusinessDetails"

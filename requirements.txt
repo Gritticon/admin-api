@@ -6,3 +6,4 @@ PyMySQL
 boto3
 httpx
 python-multipart
+pydantic-settings

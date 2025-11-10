@@ -1,5 +1,5 @@
 from sqlalchemy import  Column, Integer, String, DATETIME, Text
-from database.config import AdminBase
+from core.database import AdminBase
 
 class Ticket(AdminBase):
     __tablename__ = 'client_tickets'
