@@ -35,6 +35,10 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=True
     )
+
+    # WebSocket Update Service
+    WEBSOCKET_UPDATE_URL: str = "https://updates.gritticon.com/api/update/send_update"
+    WEBSOCKET_UPDATE_TOKEN: str = "7e3aafd77ecd7b36eb496db8ae71499f"
     
     def get_cors_origins(self) -> list:
         """Split CORS origins string into list."""
